@@ -14,24 +14,51 @@ int opcao, tamanho, i, j, n, m, digrafo, matriz_adj[MAX][MAX];  // proibido alte
 
 
 void executafuncao (){   										// É dentro desta função que o aluno deverá escrever seu código
+
+    // guarda o tamanho do maior clique encontrado
     int maior_clique = 1;
+
+    // indica se o subconjunto atual forma um clique
     int clique;
+
+    // quantidade de vértices do subconjunto atual
     int qtd;
 
-    for(int mascara = 1; mascara < (1 << n); mascara++){
+    // representa cada subconjunto possível de vértices
+    int mascara;
+
+    // variáveis auxiliares para percorrer vértices
+    int i;
+    int j;
+
+    // percorre todos os subconjuntos possíveis de vértices
+    for(mascara = 1; mascara < (1 << n); mascara++){
+
+        // inicialmente assume que é clique
         clique = 1;
+
+        // zera a contagem de vértices
         qtd = 0;
 
-        for(int i = 0; i < n; i++){
+        // conta quantos vértices existem no subconjunto
+        for(i = 0; i < n; i++){
             if(mascara & (1 << i)){
                 qtd++;
             }
         }
 
-        for(int i = 0; i < n && clique; i++){
+        // verifica se todos os vértices do subconjunto
+        // estão ligados entre si
+        for(i = 0; i < n && clique; i++){
+
             if(mascara & (1 << i)){
-                for(int j = i + 1; j < n; j++){
+
+                for(j = i + 1; j < n; j++){
+
                     if(mascara & (1 << j)){
+
+                        // se dois vértices não estiverem ligados,
+                        // então não é clique
                         if(matriz_adj[i+1][j+1] == 0){
                             clique = 0;
                             break;
@@ -41,11 +68,14 @@ void executafuncao (){   										// É dentro desta função que o aluno dever
             }
         }
 
+        // se for clique e tiver mais vértices,
+        // atualiza o maior clique encontrado
         if(clique && qtd > maior_clique){
             maior_clique = qtd;
         }
     }
 
+    // exibe o resultado final
     printf("Clique do grafo: K%d\n", maior_clique);
 }
 
@@ -75,7 +105,7 @@ int main() {
                 }
                 fclose(arquivo);
                 
-                printf ("\n --------------------------- MATRIZ DE ADJACÊNCIA ---------------------------\n");
+                printf ("\n --------------------------- MATRIZ DE ADJACENCIA ---------------------------\n");
                 
                 if((arquivo = fopen(nome_arquivo,"r")) != NULL){
                     printf("\n");
